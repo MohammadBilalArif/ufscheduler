@@ -1,0 +1,53 @@
+[
+  {
+  "class": "COP4600",
+  "title": "Operating Systems",
+  "prereq": [
+  ],
+    "avail": [
+      "fall",
+      "spring",
+      "summer",
+    ],
+    "hours": 3
+  },
+  {
+    "class": "MAS3100",
+    "title": "Computation Linear Algebra",
+    "prereq": [
+      "MAS3116",
+      "MAS3115"
+    ],
+    "avail": [
+      "fall",
+      "spring",
+      "summer",
+    ],
+    "hours": 3
+  },
+  {
+    "class": "MAS3116",
+    "title": "Calculus II",
+    "prereq": [
+      "MAS3115"
+    ],
+    "avail": [
+      "fall",
+      "spring",
+      "summer",
+    ],
+    "hours": 3
+  },
+  {
+    "class": "MAS3115",
+    "title": "Calculus I",
+    "prereq": [
+    ],
+    "avail": [
+      "fall",
+      "spring",
+      "summer",
+    ],
+    "hours": 3
+  }
+]
