@@ -12,13 +12,13 @@
 
 .arrow {
   position:relative;
-  top: 145px;
+  top: 155px;
   transform: translateY(-50%);
   color: #FFA500;
   font-size: 60pt;
 }
 .row-size {
-  height: 290px;
+  height: 310px;
 }
 
 .row-color {
@@ -26,7 +26,7 @@
 }
 .row-1-text {
   text-align: center;
-  font-size: 32pt;
+  font-size: 24pt;
 }
 
 .center-vertical {
@@ -40,7 +40,6 @@
 }
 
 .results-main {
-  height: 315px;
 
 }
 
