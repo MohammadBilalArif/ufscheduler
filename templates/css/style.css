@@ -1,3 +1,7 @@
+body {
+  overflow-x: hidden;
+}
+
 .background {
   background-color: #0000FF;
   font-family: Helvetica;
@@ -82,4 +86,8 @@ textarea {
 
 #prereqList li:nth-child(2n){
   background: #ccc;
+}
+
+.highlight {
+  background-color: orange !important;
 }

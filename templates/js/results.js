@@ -29,6 +29,19 @@ $(document).ready(function() {
     dataspot.html(html);
   }
 
+  function findObject( courseID ) {
+    for (var i = 0; i < classes.length; i++) {
+      for (var j = 0; j < classes[i].length; j++) {
+        if ( classes[i][j].Course == courseID )
+          return classes[i][j];
+      }
+    }
+
+    return {};
+  }
+
+
+
   function writeData(data) {
 
     dataspot = $("#dataspot");
@@ -37,20 +50,43 @@ $(document).ready(function() {
     classes = [];
 
     for (var i = 0; i < data.Groups.length; i++) {
-      html += "<table class='table-hover class-list-table table'>";
+      html += "<table class='table table-striped class-list-table'>";
       group = [];
       for (var cls = 0; cls < data.Groups[i].Classes.length; cls++) {
         obj = data.Groups[i].Classes[cls];
 
-        html += "<tr class='classObj'><td class='course'>" + obj["Course"] + "</td><td class='title'>" + obj["Title"] + "</td><td class='credits'>" + obj["Credits"] + "</td></tr>\n";
+        html += "<tr class='" + obj["Course"] + "'><td class='course'>" + obj["Course"] + "</td><td class='title'>" + obj["Title"] + "</td><td class='credits'>" + obj["Credits"] + "</td></tr>\n";
 
-        group.push({Course: obj["Course"], Title: obj["Title"], Credits: obj["Credits"]});
+        group.push({ "Course": obj["Course"], "Title": obj["Title"], "Credits": obj["Credits"], "Prereqs": obj["Prereqs"] });
       }
       classes.push(group);
       html += "</table>";
     }
 
     dataspot.html(html);
+/*
+    for (var j = 0; j < classes.length; j++ ) {
+      createTable(classes[j]);
+    }
+*/
+    $("table").delegate("tr", "mouseenter", function() {
+      var tr = $(this).closest('tr');
+
+      $('table tr').removeClass("highlight");
+
+      var obj = findObject( tr.children(".course").text() );
+
+      if (obj != {}) {
+        for (var i = 0; i < obj.Prereqs.length; i++) {
+          prereq = obj.Prereqs[i];
+
+          console.log("prereq: ", prereq);
+
+          $("."+prereq).addClass("highlight");
+        }
+      } else {
+      }
+    });
 
     $("#data").css("visibility", "visible");
     $("#loading").css("visibility", "hidden");
@@ -61,17 +97,5 @@ $(document).ready(function() {
   unmet = $("#unmet").val()
 
   getData(met, unmet);
-
-  $(".course").click(function(ev) {
-    alert("HERE");
-  });
-
-  $(".title").click(function(ev) {
-    alert("THERE");
-  });
-
-  $(".credits").click(function(ev) {
-    alert("GONE");
-  });
 
 });

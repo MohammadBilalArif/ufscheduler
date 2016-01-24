@@ -161,5 +161,5 @@ func main() {
 	router.HandleFunc("/api/calc", CalcClassesJSON)
 	router.PathPrefix("/").HandlerFunc(ServeFile)
 
-	log.Fatal(http.ListenAndServe(":8080", router))
+	log.Fatal(http.ListenAndServe(":80", router))
 }
