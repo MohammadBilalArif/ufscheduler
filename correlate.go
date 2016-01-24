@@ -77,10 +77,28 @@ func removeDuplicates(list []string) (result []string) {
 	return list
 }
 
+func removeReverseDuplicates(list []string) []string {
+	reverse := make([]string, len(list))
+
+	for i, item := range list {
+		reverse[len(list)-1-i] = item
+	}
+
+	list = removeDuplicates(list)
+
+	reverse = make([]string, len(list))
+
+	for i, item := range list {
+		reverse[len(list)-1-i] = item
+	}
+
+	return reverse
+}
+
 func CalcAllClasses(aur AllUnmetReqs, doneClasses []string) (byGroup [][]string) {
 	goodList := make([]string, 0)
 	prereqList := make([]string, 0)
-	doneClasses = removeDuplicates(doneClasses)
+	doneClasses = removeReverseDuplicates(doneClasses)
 
 	byGroup = make([][]string, 0)
 
@@ -104,7 +122,7 @@ func CalcAllClasses(aur AllUnmetReqs, doneClasses []string) (byGroup [][]string)
 			}
 		}
 
-		byGroup = append(byGroup, removeDuplicates(goodList))
+		byGroup = append(byGroup, removeReverseDuplicates(goodList))
 	}
 
 	return byGroup
@@ -122,6 +140,16 @@ type TemplateClassList struct {
 	Groups  []TemplateUnmetReq
 }
 
+func findClass(list []string, search string) int {
+	for i, item := range list {
+		if item[:7] == search[:7] {
+			return i
+		}
+	}
+
+	return -1
+}
+
 func CalcClassesJSON(w http.ResponseWriter, r *http.Request) {
 
 	r.ParseForm()
@@ -136,6 +164,30 @@ func CalcClassesJSON(w http.ResponseWriter, r *http.Request) {
 	done := ParseAllClasses(string(met))
 
 	byGroup := CalcAllClasses(aur, done)
+
+	for j := 0; j < 3; j++ {
+		for k, group := range byGroup {
+			for i, class := range group {
+				info, err := GetClassInfo(class)
+				if info.Course == "" {
+					continue
+				}
+				if err != nil {
+					continue
+				}
+
+				for _, prereq := range info.Prereqs {
+					index := findClass(group, prereq)
+
+					if index > i {
+						group[i], group[index] = group[index], group[i]
+					}
+				}
+
+				byGroup[k] = group
+			}
+		}
+	}
 
 	infos := make([]TemplateUnmetReq, 0)
 
