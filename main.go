@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -24,9 +25,19 @@ var (
 	ErrNoSuchClass = fmt.Errorf("No Such Class")
 )
 
+var pageCache map[string]string
+
+func init() {
+	pageCache = make(map[string]string)
+}
+
 func GetClassPage(class string) (string, error) {
 
 	c := http.Client{}
+
+	if _, isOk := pageCache[class]; isOk {
+		return pageCache[class], nil
+	}
 
 	resp, err := c.Get("http://www.registrar.ufl.edu/cdesc?crs=" + class)
 	if err != nil {
@@ -34,6 +45,8 @@ func GetClassPage(class string) (string, error) {
 	}
 
 	data, err := ioutil.ReadAll(resp.Body)
+
+	pageCache[class] = string(data)
 
 	return string(data), nil
 }
@@ -52,8 +65,6 @@ func ParsePrereqs(class string, prereqs string) []string {
 	for _, item := range parsed {
 		item = item[:3] + item[4:]
 
-		fmt.Printf("Item: '%s'\n", item)
-
 		if item != class {
 			final = append(final, item)
 		}
@@ -66,26 +77,44 @@ func ParseClassPage(data string) (ci ClassInfo, err error) {
 	defer func() {
 		// there was no such class page
 		if r := recover(); r != nil {
-			err = ErrNoSuchClass
+			err = nil
 		}
 	}()
 
 	classRE := regexp.MustCompile("<h2>(?P<class>.*)</h2>")
 	courseRE := regexp.MustCompile("<h3>(?P<title>.*)</h3>")
-	prereqRE := regexp.MustCompile("<strong>Credits: (?P<credits>\\d*); Prereq: (?P<prereq>.*)</strong>")
+	creditsRE := regexp.MustCompile("<strong>Credits: (?P<credits>\\d*)")
+	prereqRE := regexp.MustCompile("Prereq: (?P<prereq>.*)</strong>")
 
 	ci.Title = classRE.FindStringSubmatch(data)[1]
 	ci.Course = courseRE.FindStringSubmatch(data)[1]
+	creditsInt := creditsRE.FindStringSubmatch(data)
 	prereqInt := prereqRE.FindStringSubmatch(data)
 
-	ci.Credits, _ = strconv.Atoi(prereqInt[1])
+	ci.Credits, _ = strconv.Atoi(creditsInt[1])
 	ci.Course = ci.Course[0:3] + ci.Course[4:len(ci.Course)-1]
-	ci.Prereqs = ParsePrereqs(ci.Course, prereqInt[2])
+	ci.Prereqs = ParsePrereqs(ci.Course, prereqInt[1])
 
 	return ci, nil
 }
 
-func GetClassInfo(w http.ResponseWriter, r *http.Request) {
+func GetClassInfo(class string) (ClassInfo, error) {
+	data, err := GetClassPage(class)
+	if err != nil {
+		fmt.Println("error: invalid class page", class)
+		return ClassInfo{}, err
+	}
+
+	ci, err := ParseClassPage(data)
+	if err != nil {
+		fmt.Println("error: invalid parsing of class page", class)
+		return ClassInfo{}, err
+	}
+
+	return ci, nil
+}
+
+func GetClassInfoJSON(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 
 	class := vars["class"]
@@ -96,6 +125,26 @@ func GetClassInfo(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(ci)
 }
 
+type TemplateData struct {
+	Met   string
+	Unmet string
+}
+
+func StartCalc(w http.ResponseWriter, r *http.Request) {
+	tmpl, err := template.ParseFiles("templates/results.html")
+	if err != nil {
+		http.Error(w, "template syntax incorrect: "+err.Error(), 500)
+		return
+	}
+
+	r.ParseForm()
+
+	met := r.FormValue("met")
+	unmet := r.FormValue("unmet")
+
+	tmpl.Execute(w, &TemplateData{Met: met, Unmet: unmet})
+}
+
 func ServeFile(w http.ResponseWriter, r *http.Request) {
 	log.Println("Serving File: ", path.Clean(r.URL.RequestURI()))
 
@@ -103,18 +152,13 @@ func ServeFile(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, uri)
 }
 
-func ServeCSS(w http.ResponseWriter, r *http.Request) {
-	log.Println("Serving File: ", path.Clean(r.URL.RequestURI()))
-
-	uri := "./templates/css/" + path.Clean(r.URL.RequestURI())
-	http.ServeFile(w, r, uri)
-}
-
 func main() {
 
 	router := mux.NewRouter()
 
-	router.HandleFunc("/api/{class}", GetClassInfo)
+	router.HandleFunc("/api/class/{class}", GetClassInfoJSON)
+	router.HandleFunc("/api/startCalc", StartCalc)
+	router.HandleFunc("/api/calc", CalcClassesJSON)
 	router.PathPrefix("/").HandlerFunc(ServeFile)
 
 	log.Fatal(http.ListenAndServe(":8080", router))

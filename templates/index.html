@@ -1,32 +1,72 @@
 <!doctype html>
-<html ng-app>
 <head>
+  <link rel="stylesheet" id="bootstrap-css" href="http://pri.wpengine.netdna-cdn.com/wp-content/plugins/easy-bootstrap-shortcodes.bk/styles/bootstrap.min.css?ver=4.3.2" type="text/css" media="all">
+  <link rel="stylesheet" id="bootstrap-fa-icon-css" href="http://pri.wpengine.netdna-cdn.com/wp-content/plugins/easy-bootstrap-shortcodes.bk/styles/font-awesome.min.css?ver=4.3.2" type="text/css" media="all">
   <link href="/css/style.css" rel="stylesheet">
   <script src="/js/jquery.js"></script>
 </head>
-<body>
+<body class="background">
 
-  <div class="outer">
+<!-- top of page header -->
+<div class="row">
+  <div class="well col-md-offset-3 col-md-6 header" style="font-size: 30pt; background-color:#FFA500"><strong>University of Florida Scheduler</strong></h1></div>
+</div>
+<div class="row">
 
-    <div class="header">
-      <strong>University of Florida Scheduler</strong>
-    </div>
+<!-- header to main break -->
+<div style="height: 20px"></div>
+<form action="/api/startCalc" method="post">
 
-    <div class="inner">
-      <form action="#" id="classesForm">
-          <input id="newitem" placeholder="Class Number" type="text"></input>
-          <input id="add" type="submit" value="Add"></input>
+<!-- main page begin -->
+<div class="container">
 
-            <table id="classList">
-            </table>
-        </form>
-    </div>
-
+  <!-- first row of boxes -->
+   <div class="row">
+     <!-- left box -->
+     <div class="well row-size row-color col-md-7">
+       <h1 class="row-1-text"><strong>UNMET REQUIREMENTS:</strong> <br><span style="font-size:25pt"> Go to ISIS and view your 'Unmet Requirements' of your degree audit:</span></h1>
+       <h3 style="text-align:center">Copy paste your degree audit into this box. No literally go to isis and copy paste the ENTIRE PAGE into this spot. TRUST, BREH.</h3>
+     </div>
+     <!-- arrow -->
+     <div class="col-md-1 arrow">▶</div>
+     <!-- right box -->
+     <div class="row-size col-md-3">
+       <textarea name="unmet" rows="5" cols="25" class="center-vertical" style="font-size: 12pt" placeholder="Copy paste your degree audit into this box."></textarea>
+     </div>
   </div>
 
-  <script src="/js/main.js">
+<!-- break -->
+<div style="height: 30px"></div>
 
-  </script>
+  <!-- second row of boxes -->
+   <div class="row">
+     <!-- left box -->
+     <div class="row-size col-md-3">
+       <textarea name="met" rows="5" cols="25" class="center-vertical" style="font-size: 12pt" placeholder="Copy paste your degree audit into this box."></textarea>
+     </div>
+     <!-- arrow -->
+     <div class="col-md-1 arrow">◀</div>
+     <!-- right box -->
+     <div class="well row-size col-md-7">
+       <h1 class="row-1-text"><strong>MET REQUIREMENTS:</strong> <br><span style="font-size:28pt"> Go to ISIS and view your 'Critical Tracking Audit' of your degree audit:</span></h1>
+       <h3 style="text-align:center">Copy paste your degree audit into this box. No literally go to isis and copy paste the ENTIRE PAGE into this spot. TRUST, BREH.</h3>
+     </div>
+  </div>
+</div>
+
+<!-- break -->
+<div style="height: 15px"></div>
+
+<!-- button shit -->
+<div class="row">
+  <div class="col-md-offset-4 col-md-4">
+    <button id="submit" class="btn btn-block btn-lg" type="submit" value="calculate" style="background-color: #FFA500"><strong>Submit<strong></button>
+  </div>
+</div>
+</form>
+
+
+
 
 </body>
 </html>
