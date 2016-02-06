@@ -131,6 +131,8 @@ type TemplateData struct {
 }
 
 func StartCalc(w http.ResponseWriter, r *http.Request) {
+	log.Println("Starting Calculation")
+
 	tmpl, err := template.ParseFiles("templates/results.html")
 	if err != nil {
 		http.Error(w, "template syntax incorrect: "+err.Error(), 500)
@@ -152,6 +154,24 @@ func ServeFile(w http.ResponseWriter, r *http.Request) {
 	http.ServeFile(w, r, uri)
 }
 
+type statistics struct {
+	UsersHelped    int `json:"users_helped"`
+	AvgTimeTaken   int `json:"avg_time_taken_ms"`
+	TotalTimeTaken int `json:"total_time_taken_ms"`
+}
+
+func GenerateStats(w http.ResponseWriter, r *http.Request) {
+	log.Println("Generating Stats")
+
+	var stats statistics
+
+	stats.TotalTimeTaken = TotalTimeTaken
+	stats.AvgTimeTaken = TotalTimeTaken / UsersHelped
+	stats.UsersHelped = UsersHelped
+
+	json.NewEncoder(w).Encode(stats)
+}
+
 func main() {
 
 	router := mux.NewRouter()
@@ -159,6 +179,7 @@ func main() {
 	router.HandleFunc("/api/class/{class}", GetClassInfoJSON)
 	router.HandleFunc("/api/startCalc", StartCalc)
 	router.HandleFunc("/api/calc", CalcClassesJSON)
+	router.HandleFunc("/api/stats", GenerateStats)
 	router.PathPrefix("/").HandlerFunc(ServeFile)
 
 	log.Fatal(http.ListenAndServe(":80", router))

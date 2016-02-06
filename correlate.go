@@ -5,8 +5,15 @@ import (
 	"fmt"
 	"net/http"
 	"strings"
+	"time"
 )
 
+var (
+	UsersHelped    = 0
+	TotalTimeTaken = 0
+)
+
+// contains checks if a string is contained within another string
 func contains(list []string, check string) bool {
 	for _, item := range list {
 		if strings.Contains(item, check) || strings.Contains(check, item) {
@@ -17,10 +24,13 @@ func contains(list []string, check string) bool {
 	return false
 }
 
+// removeSpaces removes all spaces from a string (including middle ones)
 func removeSpaces(str string) string {
 	return strings.Replace(str, " ", "", -1)
 }
 
+// checkRequirements checks the list of classesDone for all the classes in
+// class.Prereqs, returning a list of all classes that have not been completed
 func checkRequirements(class ClassInfo, classesDone []string) (unmet []string) {
 	unmet = make([]string, 0)
 
@@ -33,6 +43,8 @@ func checkRequirements(class ClassInfo, classesDone []string) (unmet []string) {
 	return unmet
 }
 
+// calcNeededClasses calculates the classes that can be taken based on prerequisites, as well as generating
+// a list of classes that have NOT been completed (prereqs)
 func calcNeededClasses(neededClasses []string, doneClasses []string) (ready []string, prereqs []string) {
 	needed := make([]string, 0)
 	good2go := make([]string, 0)
@@ -62,6 +74,7 @@ func calcNeededClasses(neededClasses []string, doneClasses []string) (ready []st
 	return
 }
 
+// removeDuplicates removes all duplicates from a list of classes
 func removeDuplicates(list []string) (result []string) {
 	found := make(map[string]bool)
 	j := 0
@@ -77,6 +90,8 @@ func removeDuplicates(list []string) (result []string) {
 	return list
 }
 
+// removeReverseDuplicates attempts to remove all duplicates starting from the
+// end and moving towards the front
 func removeReverseDuplicates(list []string) []string {
 	reverse := make([]string, len(list))
 
@@ -95,6 +110,8 @@ func removeReverseDuplicates(list []string) []string {
 	return reverse
 }
 
+// CalcAllClasses is the main function that wraps all the other helper functions in
+// determining which classes should be taken in which order.
 func CalcAllClasses(aur AllUnmetReqs, doneClasses []string) (byGroup [][]string) {
 	goodList := make([]string, 0)
 	prereqList := make([]string, 0)
@@ -128,18 +145,23 @@ func CalcAllClasses(aur AllUnmetReqs, doneClasses []string) (byGroup [][]string)
 	return byGroup
 }
 
+// TemplateUnmetReq is an unmet requirement in JSON friendly format
 type TemplateUnmetReq struct {
 	Group       string
 	CredsNeeded float64
 	Classes     []ClassInfo
 }
 
+// TemplateClassList is a class list in JSON friendly format
 type TemplateClassList struct {
 	Major   string
 	College string
 	Groups  []TemplateUnmetReq
 }
 
+// findClass searches a list of classes for a particular one,
+// allowing for leeway when classes may or may not have a letter
+// after them (the UF website is bad about this!)
 func findClass(list []string, search string) int {
 	for i, item := range list {
 		if item[:7] == search[:7] {
@@ -150,21 +172,32 @@ func findClass(list []string, search string) int {
 	return -1
 }
 
+// CalcClassesJSON wraps CalcAllClasses and returns the results
+// in JSON format, useful for our website (and any other REST endpoint users)
 func CalcClassesJSON(w http.ResponseWriter, r *http.Request) {
+
+	startTime := time.Now()
+
+	defer func() {
+		endTime := time.Now()
+
+		TotalTimeTaken += int(endTime.Sub(startTime).Nanoseconds() / 1e6)
+	}()
 
 	r.ParseForm()
 
 	unmet := r.FormValue("unmet")
 	met := r.FormValue("met")
 
-	fmt.Println("UNMET: ", unmet)
-	fmt.Println("MET: ", met)
+	UsersHelped++
 
 	aur := ParseUnmet(string(unmet))
 	done := ParseAllClasses(string(met))
 
 	byGroup := CalcAllClasses(aur, done)
 
+	// this loop double checks that all classes prerequisites are met before a class
+	// can be taken.  Our heuristic is imperfect and this was a quick solution.
 	for j := 0; j < 3; j++ {
 		for k, group := range byGroup {
 			for i, class := range group {
@@ -189,6 +222,7 @@ func CalcClassesJSON(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 
+	// generate the data in a format that is JSON friendly
 	infos := make([]TemplateUnmetReq, 0)
 
 	for i, group := range byGroup {
@@ -221,5 +255,6 @@ func CalcClassesJSON(w http.ResponseWriter, r *http.Request) {
 		Groups:  infos,
 	}
 
+	// send out all our data using the JSON encoder
 	json.NewEncoder(w).Encode(tmplInfo)
 }
