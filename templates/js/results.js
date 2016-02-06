@@ -17,7 +17,8 @@ $(document).ready(function() {
     html = "";
 
     for (var i = 0; i < classes.length; i++) {
-      html += "<table class='table-hover class-list-table table'>";
+      html += "<table class='table-hover table'>";
+      html += "<tr><th>Course ID</th><th>Title</th><th>Credit Hours</th></tr>"
       for (var cls = 0; cls < classes[i].length; cls++) {
         obj = classes[i][cls];
 
@@ -50,7 +51,8 @@ $(document).ready(function() {
     classes = [];
 
     for (var i = 0; i < data.Groups.length; i++) {
-      html += "<table class='table table-striped class-list-table'>";
+      html += "<table class='table table-striped'>";
+      html += "<tr><th>Course ID</th><th>Title</th><th>Credit Hours</th></tr>"
       group = [];
       for (var cls = 0; cls < data.Groups[i].Classes.length; cls++) {
         obj = data.Groups[i].Classes[cls];

@@ -1,0 +1,97 @@
+<!doctype html>
+<head>
+  <link rel="stylesheet" id="bootstrap-css" href="http://pri.wpengine.netdna-cdn.com/wp-content/plugins/easy-bootstrap-shortcodes.bk/styles/bootstrap.min.css?ver=4.3.2" type="text/css" media="all">
+  <link rel="stylesheet" id="bootstrap-fa-icon-css" href="http://pri.wpengine.netdna-cdn.com/wp-content/plugins/easy-bootstrap-shortcodes.bk/styles/font-awesome.min.css?ver=4.3.2" type="text/css" media="all">
+  <link href="/css/style.css" rel="stylesheet">
+  <script src="/js/jquery.js"></script>
+</head>
+<body class="background">
+
+<!-- top of page header -->
+<div class="row">
+  <div class="well col-md-offset-3 col-md-6 header" style="font-size: 32pt; background-color:#FFA500"><strong>University of Florida Scheduler</strong></h1></div>
+</div>
+<div class="row">
+
+<!-- header to main break -->
+<div style="height: 20px"></div>
+<form action="/api/startCalc" method="post">
+
+<!-- main page begin -->
+<div class="container">
+
+<div class="row">
+  <div class="well col-md-offset-2 col-md-7" style="text-align: center; font-size:15pt">
+    <div>Welcome to Gator Scheduler.</div>
+      <div> Here you can input your degree audit information and have your remaining courseload output to you.</div>
+  </div>
+</div>
+
+  <!-- second row of boxes -->
+   <div class="row">
+     <!-- left box -->
+     <div class="row-size col-md-3">
+       <textarea name="met" rows="5" cols="25" class="center-vertical" style="font-size: 12pt" placeholder="Copy paste your degree audit into this box."></textarea>
+     </div>
+     <!-- arrow -->
+     <div class="col-md-1 arrow">◀</div>
+     <!-- right box -->
+     <div class="well row-size col-md-7">
+       <p class="row-1-text"><strong>Step 1: COMPLETED REQUIREMENTS</strong></p>
+        <div style="font-size: 13pt">
+          <p>1) <a target="_blank" href="http://www.isis.ufl.edu/">Click here to go to ISIS.</a></p>
+          <p>2) Select Degree Audit on the left.</p>
+          <p>3) Log in with your gator link.</p>
+          <p>4) Click on View Critical Tracking Audit.</p>
+          <p>5) Select all (ctrl+a) then copy (ctrl+c).</p>
+          <p>6) Paste (ctrl+v) the information into the box to the left.</p>
+        </div>
+     </div>
+  </div>
+
+
+<!-- break -->
+<div class="row" style="height: 30px"></div>
+
+<!-- unmet requirements -->
+ <div class="row">
+   <!-- left box -->
+   <div class="well row-size row-color col-md-7">
+     <p class="row-1-text"><strong>Step 2: UNMET REQUIREMENTS</strong></p>
+     <div style="font-size: 13pt">
+       <p>1) <a target="_blank" href="http://www.isis.ufl.edu/">Click here to go to ISIS.</a></p>
+       <p>2) Select Degree Audit on the left.</p>
+       <p>3) Log in with your gator link.</p>
+       <p>4) Click on View Unmet Requirements.</p>
+       <p>5) Select all (ctrl+a) then copy (ctrl+c).</p>
+       <p>6) Paste (ctrl+v) the information into the box to the right.</p>
+      </div>
+   </div>
+   <!-- arrow -->
+   <div class="col-md-1 arrow">▶</div>
+   <!-- right box -->
+   <div class="row-size col-md-3">
+     <textarea name="unmet" rows="5" cols="25" class="center-vertical" style="font-size: 12pt" placeholder="Copy paste your degree audit into this box."></textarea>
+   </div>
+</div>
+
+
+
+</div>
+
+<!-- break -->
+<div style="height: 15px"></div>
+
+<!-- button shit -->
+<div class="row">
+  <div class="col-md-offset-4 col-md-4">
+    <button id="submit" class="btn btn-block btn-lg" type="submit" value="calculate" style="background-color: #FFA500"><strong>Submit<strong></button>
+  </div>
+</div>
+</form>
+
+
+
+
+</body>
+</html>

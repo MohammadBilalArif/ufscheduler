@@ -1,97 +1,97 @@
-<!doctype html>
+<!DOCTYPE html>
+<html>
 <head>
-  <link rel="stylesheet" id="bootstrap-css" href="http://pri.wpengine.netdna-cdn.com/wp-content/plugins/easy-bootstrap-shortcodes.bk/styles/bootstrap.min.css?ver=4.3.2" type="text/css" media="all">
-  <link rel="stylesheet" id="bootstrap-fa-icon-css" href="http://pri.wpengine.netdna-cdn.com/wp-content/plugins/easy-bootstrap-shortcodes.bk/styles/font-awesome.min.css?ver=4.3.2" type="text/css" media="all">
-  <link href="/css/style.css" rel="stylesheet">
-  <script src="/js/jquery.js"></script>
+  <title>GatorPik.com - the unofficial UF course scheduler</title>
+  <link href="/css/bootstrap.css" rel="stylesheet">
+  <link href="/css/style-new.css" rel="stylesheet">
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/bootstrap.js"></script>
 </head>
-<body class="background">
+<body>
 
-<!-- top of page header -->
-<div class="row">
-  <div class="well col-md-offset-3 col-md-6 header" style="font-size: 32pt; background-color:#FFA500"><strong>University of Florida Scheduler</strong></h1></div>
-</div>
-<div class="row">
-
-<!-- header to main break -->
-<div style="height: 20px"></div>
-<form action="/api/startCalc" method="post">
-
-<!-- main page begin -->
 <div class="container">
 
-<div class="row">
-  <div class="well col-md-offset-2 col-md-7" style="text-align: center; font-size:15pt">
-    <div>Welcome to Gator Scheduler.</div>
-      <div> Here you can input your degree audit information and have your remaining courseload output to you.</div>
+  <!-- HEADER -->
+  <div class="row">
+    <span class="col-md-3 header">
+      <span class="ufblue">G</span><span class="uforange">ator</span><span class="ufblue">P</span><span class="uforange">ik</span>
+    </span>
+    <span class="subheader">
+      The Unofficial UF Scheduler
+    </span>
+    <span class="col-md-9 divider">
+    </span>
+  </div>
+  <!-- END HEADER -->
+
+</div>
+<div class="container-fluid">
+  <!-- SUBTEXT AND VIDEO -->
+  <div class="hero-unit">
+  <div class="row">
+    <div style="height: 50px;"></div>
+    <h2 class="col-md-offset-3 col-md-6 text-center">A tool to help UF students plan their course schedule.<br><br>  This tool works by scanning your Degree Audit, analyzing the courses you still need to take,
+    and ensuring all prerequisites are met.  A <i>tentative</i> list is then generated of which classes you should take in which order.</h2>
+  </div>
+  <div style="height: 50px;"></div>
+  <div class="row">
+    <video class="col-md-offset-2 col-md-8 col-sm-offset-2 col-sm-8 col-xs-8 col-xs-offset-2 col-lg-offset-4 col-lg-4" controls>
+      <source src="/instructions.mp4" type="video/mp4">
+      Your browser doesn't support the video tag. Please view in a different browser.
+    </video>
   </div>
 </div>
+</div>
 
-  <!-- second row of boxes -->
-   <div class="row">
-     <!-- left box -->
-     <div class="row-size col-md-3">
-       <textarea name="met" rows="5" cols="25" class="center-vertical" style="font-size: 12pt" placeholder="Copy paste your degree audit into this box."></textarea>
-     </div>
-     <!-- arrow -->
-     <div class="col-md-1 arrow">◀</div>
-     <!-- right box -->
-     <div class="well row-size col-md-7">
-       <p class="row-1-text"><strong>Step 1: COMPLETED REQUIREMENTS</strong></p>
-        <div style="font-size: 13pt">
-          <p>1) <a target="_blank" href="http://www.isis.ufl.edu/">Click here to go to ISIS.</a></p>
-          <p>2) Select Degree Audit on the left.</p>
-          <p>3) Log in with your gator link.</p>
-          <p>4) Click on View Critical Tracking Audit.</p>
-          <p>5) Select all (ctrl+a) then copy (ctrl+c).</p>
-          <p>6) Paste (ctrl+v) the information into the box to the left.</p>
-        </div>
-     </div>
-  </div>
+<div class="container">
+  <!-- END SUBTEXT AND VIDEO -->
+
+  <div style="height: 50px;"></div>
+
+
+  <!-- INPUT BOXES -->
+
+<form action="/api/startCalc" method="post">
+  <div class="row">
+    <!-- left box -->
+    <div class="col-md-offset-2 col-sm-offset-2 col-md-3">
+      <textarea name="met" rows="5" cols="25" class="center-vertical" style="font-size: 12pt" placeholder="Paste your Critical Tracking Audit here."></textarea>
+    </div>
+    <!-- arrow -->
+    <div class="col-md-1 arrow col-sm-1">◀</div>
+    <!-- right box -->
+    <div class="well row-size col-md-4 col-sm-4">
+      <p>ISIS > Degree Audit ></p>
+      <h2>Critical Tracking Audit</h2>
+    </div>
+ </div>
 
 
 <!-- break -->
 <div class="row" style="height: 30px"></div>
 
 <!-- unmet requirements -->
- <div class="row">
-   <!-- left box -->
-   <div class="well row-size row-color col-md-7">
-     <p class="row-1-text"><strong>Step 2: UNMET REQUIREMENTS</strong></p>
-     <div style="font-size: 13pt">
-       <p>1) <a target="_blank" href="http://www.isis.ufl.edu/">Click here to go to ISIS.</a></p>
-       <p>2) Select Degree Audit on the left.</p>
-       <p>3) Log in with your gator link.</p>
-       <p>4) Click on View Unmet Requirements.</p>
-       <p>5) Select all (ctrl+a) then copy (ctrl+c).</p>
-       <p>6) Paste (ctrl+v) the information into the box to the right.</p>
-      </div>
-   </div>
-   <!-- arrow -->
-   <div class="col-md-1 arrow">▶</div>
-   <!-- right box -->
-   <div class="row-size col-md-3">
-     <textarea name="unmet" rows="5" cols="25" class="center-vertical" style="font-size: 12pt" placeholder="Copy paste your degree audit into this box."></textarea>
-   </div>
-</div>
-
-
-
-</div>
-
-<!-- break -->
-<div style="height: 15px"></div>
-
-<!-- button shit -->
 <div class="row">
-  <div class="col-md-offset-4 col-md-4">
-    <button id="submit" class="btn btn-block btn-lg" type="submit" value="calculate" style="background-color: #FFA500"><strong>Submit<strong></button>
+  <!-- left box -->
+  <div class="well col-md-offset-2 col-sm-offset-2 col-md-4 col-sm-4 text-right">
+    <p>ISIS > Degree Audit ></p>
+    <h2>Unmet Requirements</h2>
+  </div>
+  <!-- arrow -->
+  <div class="col-md-1 arrow col-xs-1">▶</div>
+  <!-- right box -->
+  <div class="col-md-3 col-sm-3">
+    <textarea name="unmet" rows="5" cols="25" class="center-vertical" style="font-size: 12pt" placeholder="Paste your Unmet Requirements here."></textarea>
   </div>
 </div>
+
+  <!-- END INPUT BOXES -->
+
+  <input class="btn btn-primary col-md-offset-5 col-md-2 col-sm-offset-5 col-sm-2" type="submit" value="Go!"></input>
+
 </form>
 
-
-
+</div>
 
 </body>
 </html>

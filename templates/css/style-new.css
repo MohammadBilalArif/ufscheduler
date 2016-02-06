@@ -1,0 +1,78 @@
+body {
+  padding: 0;
+  margin: 0;
+}
+
+.container-fluid {
+  margin: 0;
+  padding: 0;
+}
+
+.header  {
+  font-size: 24pt;
+  font-weight: bolder;
+}
+
+.uforange {
+  color: rgb(209, 129, 72);
+}
+
+.ufblue {
+  color: rgb(63, 106, 180);
+}
+
+.subheader {
+  font-size: 18pt;
+  position: relative;
+  top: 5px;
+  left: -50px;
+}
+
+.arrow {
+  font-size: 24pt;
+  color: rgb(209,129,72);
+  position: relative;
+  top: 30px;
+}
+
+.highlight {
+  background-color: rgb(209,129,72) !important;
+}
+
+.hero-unit {
+    background-image:url('http://franklincode.coursekit.com.s3.amazonaws.com/30e1ceef65aa4ba1a1bb66056eeb09b6/sass/img/onboarding-bg.jpg');
+    background-size:cover;
+    background-color: #EEEEEE;
+    height:800px;
+
+  }
+.hero-unit h1 {
+    color: #FFFFFF;
+    font-size: 60px;
+    letter-spacing: -1px;
+    line-height: 1;
+    margin-bottom: 0;
+}
+.hero-unit h2 {
+    font-size: 25px;
+    color: #FFFFFF;
+}
+
+.description-text {
+  font-size: 14pt;
+}
+
+.instruction-video {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.divider {
+  border-bottom: 1px solid black;
+  width: 100%;
+}
+
+textarea {
+  resize: none;
+}

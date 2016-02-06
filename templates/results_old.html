@@ -1,0 +1,66 @@
+<!doctype html>
+<head>
+  <link rel="stylesheet" id="bootstrap-css" href="http://pri.wpengine.netdna-cdn.com/wp-content/plugins/easy-bootstrap-shortcodes.bk/styles/bootstrap.min.css?ver=4.3.2" type="text/css" media="all">
+  <link rel="stylesheet" id="bootstrap-fa-icon-css" href="http://pri.wpengine.netdna-cdn.com/wp-content/plugins/easy-bootstrap-shortcodes.bk/styles/font-awesome.min.css?ver=4.3.2" type="text/css" media="all">
+  <script src="/js/jquery.js"></script>
+  <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/s/bs/jqc-1.11.3,dt-1.10.10/datatables.min.css"/>
+  <script type="text/javascript" src="https://cdn.datatables.net/s/bs/jqc-1.11.3,dt-1.10.10/datatables.min.js"></script>
+  <link href="/css/style.css" rel="stylesheet">
+</head>
+<body class="background">
+
+<!-- top of page header -->
+<div class="row">
+  <div class="well col-md-offset-3 col-md-6 header" style="font-size: 32pt; background-color:#FFA500"><strong>University of Florida Scheduler</strong></h1></div>
+</div>
+
+<!-- header to main break -->
+<div style="height: 20px"></div>
+
+<div id="loading">
+<!-- loading gif -->
+  <img border="0" alt="loading" src="http://whatzup.com/content/viewer/web/images/loading.gif" width="294" height="294" style="top: 300px;" class="center-vertical col-md-offset-5 col-md-2">
+</div>
+
+
+<div id="data" style="visibility:hidden;">
+<!-- results of audit -->
+<div class="container">
+  <div class="row">
+<div class="well col-md-offset-1 col-md-10 results-main" style="background-color:e6e6e6;">
+  <div class="title-text" style="text-align: center"><strong>Explanation of Results:</strong></div><br><span style="font-size: 18pt">The following list has been compiled by comparing the required classes
+    under your unmet requirements with your critical tracking degree audit. Courses are not listed in order of availability so you should still see your advisor when making your schedule.<br></br>
+    <br> Please use this to <i>help</i> plan your schedule and do not rely on it 100%.  Courses are listed in order of prerequisites: classes with fewest are at the top, and those with the most at the bottom.
+    You should choose your classes from <strong>top-to-bottom</strong>, and treat each section separately.</br></span>
+</div>
+</div>
+<!-- display and separating line -->
+<div class="well col-md-4" style="font-size: 15pt"><strong>Courses Available:</strong></div>
+<div class="col-md-8" style="height: 30px;border-bottom: 5px double orange;"></div>
+</div>
+
+<div class="container">
+<div class="row">
+  <div id="dataspot">
+
+  </div>
+</div>
+</div>
+</div>
+</div>
+<script src="/js/results.js">
+
+</script>
+
+<textarea name="met" id="met" style="visibility: hidden;">
+  {{ .Met }}
+</textarea>
+
+<textarea name="unmet" id="unmet" style="visibility: hidden;">
+  {{ .Unmet }}
+</textarea>
+
+</div>
+
+</body>
+</html>
