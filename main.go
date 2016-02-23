@@ -145,9 +145,6 @@ func StartCalc(w http.ResponseWriter, r *http.Request) {
 	met := r.FormValue("met")
 	unmet := r.FormValue("unmet")
 
-	log.Printf("Met: %s", met)
-	log.Printf("Unmet: %s", unmet)
-
 	tmpl.Execute(w, &TemplateData{Met: met, Unmet: unmet})
 }
 

@@ -1,13 +1,12 @@
 $(document).ready(function() {
 
   function getData(met, unmet) {
-    $.getJSON("/api/calc?" + (new Date()).getTime(), {
+    $.post("/api/calc?" + (new Date()).getTime(), {
       "met": met,
       "unmet": unmet
     },
     function(data) {
-      console.log(data);
-      writeData(data);
+      writeData(JSON.parse(data));
     });
   }
 
