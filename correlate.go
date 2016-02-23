@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -189,12 +190,24 @@ func CalcClassesJSON(w http.ResponseWriter, r *http.Request) {
 	unmet := r.FormValue("unmet")
 	met := r.FormValue("met")
 
+	log.Printf("Met: %s", met)
+	log.Printf("Unmet: %s", unmet)
+
 	UsersHelped++
 
+	log.Println("Parsing Unmet Requirements")
+
 	aur := ParseUnmet(string(unmet))
+
+	log.Println("Parsing All Classes")
+
 	done := ParseAllClasses(string(met))
 
+	log.Println("Calculating Intersection of Classes")
+
 	byGroup := CalcAllClasses(aur, done)
+
+	log.Println("Double-checking Class Ordering")
 
 	// this loop double checks that all classes prerequisites are met before a class
 	// can be taken.  Our heuristic is imperfect and this was a quick solution.
@@ -221,6 +234,8 @@ func CalcClassesJSON(w http.ResponseWriter, r *http.Request) {
 			}
 		}
 	}
+
+	log.Println("Preparing Data for JSON Format")
 
 	// generate the data in a format that is JSON friendly
 	infos := make([]TemplateUnmetReq, 0)
@@ -254,6 +269,10 @@ func CalcClassesJSON(w http.ResponseWriter, r *http.Request) {
 		College: aur.College,
 		Groups:  infos,
 	}
+
+	w.WriteHeader(200)
+
+	log.Println("Sending Back JSON Data")
 
 	// send out all our data using the JSON encoder
 	json.NewEncoder(w).Encode(tmplInfo)
