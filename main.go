@@ -145,13 +145,16 @@ func StartCalc(w http.ResponseWriter, r *http.Request) {
 	met := r.FormValue("met")
 	unmet := r.FormValue("unmet")
 
+	log.Printf("Met: %s", met)
+	log.Printf("Unmet: %s", unmet)
+
 	tmpl.Execute(w, &TemplateData{Met: met, Unmet: unmet})
 }
 
 func ServeFile(w http.ResponseWriter, r *http.Request) {
 	log.Println("Serving File: ", path.Clean(r.URL.RequestURI()))
 
-	uri := "./templates/" + path.Clean(r.URL.RequestURI())
+	uri := "templates/" + path.Clean(r.URL.RequestURI())
 	http.ServeFile(w, r, uri)
 }
 
@@ -166,9 +169,11 @@ func GenerateStats(w http.ResponseWriter, r *http.Request) {
 
 	var stats statistics
 
-	stats.TotalTimeTaken = TotalTimeTaken
-	stats.AvgTimeTaken = TotalTimeTaken / UsersHelped
-	stats.UsersHelped = UsersHelped
+	if UsersHelped != 0 {
+		stats.TotalTimeTaken = TotalTimeTaken
+		stats.AvgTimeTaken = TotalTimeTaken / UsersHelped
+		stats.UsersHelped = UsersHelped
+	}
 
 	json.NewEncoder(w).Encode(stats)
 }
