@@ -68,7 +68,7 @@ func parseHeader(data string) (major, college, remainder string) {
 	state := 0
 
 	for i := 0; i < len(lines); i++ {
-		if strings.Contains(lines[i], "Unmet Criteria") {
+		if strings.Contains(lines[i], "UNMET CRITERIA") {
 			state++
 
 			for {
