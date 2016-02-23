@@ -175,6 +175,15 @@ func GenerateStats(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
+	logFile, err := os.OpenFile("log.txt", 0600, os.O_CREATE|os.O_APPEND|os.O_WRONLY)
+	if err != nil {
+		log.Println("error: unable to open log file")
+		return
+	}
+	defer logFile.Close()
+
+	log.SetOutput(logFile)
+
 	address := ":8888"
 
 	if len(os.Args) > 1 {
