@@ -181,14 +181,6 @@ func main() {
 		address = os.Args[1]
 	}
 
-	cert := ""
-	key := ""
-
-	if len(os.Args) == 4 {
-		cert = os.Args[2]
-		key = os.Args[3]
-	}
-
 	router := mux.NewRouter()
 
 	router.HandleFunc("/api/class/{class}", GetClassInfoJSON)
@@ -197,9 +189,5 @@ func main() {
 	router.HandleFunc("/api/stats", GenerateStats)
 	router.PathPrefix("/").HandlerFunc(ServeFile)
 
-	if len(cert) > 0 && len(key) > 0 {
-		log.Fatal(http.ListenAndServeTLS(address, cert, key, router))
-	} else {
-		log.Fatal(http.ListenAndServe(address, router))
-	}
+	log.Fatal(http.ListenAndServe(address, router))
 }
