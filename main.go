@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"path"
 	"regexp"
 	"strconv"
@@ -174,6 +175,12 @@ func GenerateStats(w http.ResponseWriter, r *http.Request) {
 
 func main() {
 
+	address := ":8888"
+
+	if len(os.Args) > 1 {
+		address = os.Args[1]
+	}
+
 	router := mux.NewRouter()
 
 	router.HandleFunc("/api/class/{class}", GetClassInfoJSON)
@@ -182,5 +189,5 @@ func main() {
 	router.HandleFunc("/api/stats", GenerateStats)
 	router.PathPrefix("/").HandlerFunc(ServeFile)
 
-	log.Fatal(http.ListenAndServe(":80", router))
+	log.Fatal(http.ListenAndServe(address, router))
 }
